@@ -24,7 +24,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <iostream>
+
 #include <RTIMULib.h>
+#include <wiringPi.h>
 
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
@@ -86,6 +89,11 @@ int main(int argc, char **argv)
     imu->setAccelEnable(true);
     imu->setCompassEnable(use_compass);
 
+    // Setup the trigger pin
+    wiringPiSetup();
+    pinMode(0, OUTPUT);     // GPIO 0 (pin 11)
+    int counter = 0;
+
     sensor_msgs::Imu imu_msg;
     while (ros::ok())
     {
@@ -112,6 +120,16 @@ int main(int argc, char **argv)
             imu_msg.linear_acceleration.z = imu_data.accel.z() * G_TO_MPSS;
 
             imu_pub.publish(imu_msg);
+
+            // Send trigger pulse
+            if(counter >= 3) {
+                digitalWrite(0, HIGH);
+                delay(20/1000.0);
+                digitalWrite(0, LOW);
+                counter = 0;
+            }
+            else counter++;
+
         }
         ros::spinOnce();
         ros::Duration(imu->IMUGetPollInterval() / 1000.0).sleep();

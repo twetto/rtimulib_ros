@@ -5,6 +5,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
 )
+find_package(WiringPi REQUIRED)
+find_package(Threads REQUIRED)
 
 catkin_package(
     LIBRARIES rtimulib_ros
@@ -14,6 +16,9 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
+include_directories(
+  ${WIRINGPI_INCLUDE_DIRS}
+)
 
 add_executable(${PROJECT_NAME} src/${PROJECT_NAME}.cpp)
 
@@ -21,6 +26,8 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   RTIMULib
 )
+target_link_libraries(${PROJECT_NAME} ${WIRINGPI_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
