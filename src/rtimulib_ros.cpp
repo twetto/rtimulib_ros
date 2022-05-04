@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         ROS_WARN_STREAM("No frame_id provided - default: " << frame_id);
     }
 
-    bool use_compass = nh.param<bool>("use_compass", true);
+    bool use_compass = nh.param<bool>("use_compass", false);
 
     ROS_INFO_STREAM("Use Compass: " << use_compass);
 
