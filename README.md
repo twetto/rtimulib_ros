@@ -4,6 +4,19 @@ A simple package to use the nice RTIMULib (unfortunately , now unmaintained) fro
 
 The RTIMULib needs to be installed. It can be found here : <https://github.com/RTIMULib/RTIMULib>
 
+## Preparation
+
+Additional [WiringPi](http://wiringpi.com/) lib will be needed.
+After the lib above is installed, a CMake module should be added:
+`/usr/share/cmake/Modules/FindWiringPi.cmake`
+```cmake
+find_library(WIRINGPI_LIBRARIES NAMES wiringPi)
+find_path(WIRINGPI_INCLUDE_DIRS NAMES wiringPi.h)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(WiringPi DEFAULT_MSG WIRINGPI_LIBRARIES WIRINGPI_INCLUDE_DIRS)
+```
+
 ## Topic
 
 The fused orientation data are published on the `imu` topic.
