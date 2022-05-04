@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 
         }
         ros::spinOnce();
-        ros::Duration(imu->IMUGetPollInterval() / 1000.0).sleep();
+        ros::Duration(imu->IMUGetPollInterval() / 10000.0).sleep();
     }
     return 0;
 }
